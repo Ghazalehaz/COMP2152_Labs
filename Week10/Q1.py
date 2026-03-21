@@ -46,32 +46,3 @@ def find_credential(website):
     with sqlite3.connect(DB_NAME) as conn:
         return conn.execute("SELECT * FROM vault WHERE website = ?", (website,)).fetchall()    
 
-# --- Main (provided) ---
-if __name__ == "__main__":
-    print("=" * 60)
-    print("  PASSWORD VAULT")
-    print("=" * 60)
-
-    setup_database()
-
-    print("\n--- Adding Credentials ---")
-    credentials = [
-        ("github.com",  "admin",        "s3cur3P@ss"),
-        ("google.com",  "maziar@gmail",  "MyP@ssw0rd"),
-        ("netflix.com", "maziar",        "N3tfl1x!"),
-        ("github.com",  "work_user",    "W0rkP@ss!"),
-    ]
-    for site, user, pw in credentials:
-        add_credential(site, user, pw)
-        print(f"  Saved: {site}" + (f" ({user.split('_')[0]})" if "_" in user else ""))
-
-    print("\n--- All Credentials ---")
-    display_credentials(get_all_credentials())
-
-    print("\n--- Search for 'github.com' ---")
-    display_credentials(find_credential("github.com"))
-
-    print("\n--- Search for 'spotify.com' ---")
-    display_credentials(find_credential("spotify.com"))
-
-    print("\n" + "=" * 60)
